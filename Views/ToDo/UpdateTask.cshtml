@@ -1,0 +1,49 @@
+﻿
+
+<form method="post" action="/ToDo/UpdateTask" enctype="multipart/form-data">
+    <div class="mb-3">
+        <input type="hidden" class="form-control" name="Id" value="@Model.Id">
+        <input type="hidden" class="form-control" name="UserId" value="@Model.UserId">
+
+        <label for="titleInput" class="form-label">Title</label>
+        <input type="text" class="form-control" id="titleInput" name="Title" value="@Model.Title" required>
+    </div>
+    <div class="mb-3">
+        <label for="descriptionInput" class="form-label">Description</label>
+        <input type="text" class="form-control" id="descriptionInput" name="Description" value="@Model.Description" required>
+    </div>
+
+    <div class="mb-3">
+        <label for="pdfInput" class="form-label">Upload New PDF</label>
+        <input type="file" class="form-control" id="pdfInput" name="FileDescription" accept="application/pdf">
+        @if (!string.IsNullOrEmpty(Model.FileDescription))
+        {
+            <embed id="pdfPreview" src="~/files/@Model.FileDescription" style="height: 300px; width: 500px;" type="application/pdf" />
+        }
+    </div>
+
+    <div class="mb-3">
+        <label for="deadlineInput" class="form-label">Deadline</label>
+        <input type="datetime-local" class="form-control" id="deadlineInput" name="DeadLine" value="@Model.DeadLine.ToString("yyyy-MM-ddTHH:mm")" required>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+<script>
+    document.getElementById('pdfInput').addEventListener('change', function (event) {
+        const file = event.target.files[0];
+        const pdfPreview = document.getElementById('pdfPreview');
+
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                pdfPreview.src = e.target.result; // Set the PDF source to the file's data URL
+                pdfPreview.style.display = 'block'; // Show the PDF preview
+            };
+            reader.readAsDataURL(file); // Read the file as a data URL
+        } else {
+            pdfPreview.style.display = 'none'; // Hide the preview if no file is selected
+        }
+    });
+</script>

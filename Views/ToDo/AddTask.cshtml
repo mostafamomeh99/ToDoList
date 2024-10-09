@@ -1,0 +1,46 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<form method="post" action="/ToDo/AddTask" enctype="multipart/form-data">
+    <div class="mb-3">
+        <label for="exampleInputEmail1" class="form-label">Title</label>
+        <input type="text" class="form-control" id="exampleInputEmail1" name="Title" required>
+    </div>
+    <div class="mb-3">
+        <label for="exampleInputPassword2" class="form-label">Description </label>
+        <input type="text" class="form-control" id="exampleInputPassword2" name="Description" required>
+    </div>
+
+    <div class="mb-3">
+        <label for="fileInput" class="form-label">File Describtion</label>
+        <input type="file" class="form-control" id="fileInput" name="FileDescription" accept="application/pdf" required>
+        <embed id="pdfPreview" style="display: none; height: 300px; width: 500px;" type="application/pdf" />
+    </div>  
+    <div class="mb-3">
+        <label for="exampleInputPassword4" class="form-label">DeadLine</label>
+        <input type="datetime-local" class="form-control" id="exampleInputPassword4" name="DeadLine" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+
+
+<script>
+    document.getElementById('fileInput').addEventListener('change', function (event) {
+        const file = event.target.files[0];
+        const pdfPreview = document.getElementById('pdfPreview');
+
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                pdfPreview.src = e.target.result; // Set the PDF source to the file's data URL
+                pdfPreview.style.display = 'block'; // Show the PDF preview
+            };
+            reader.readAsDataURL(file); // Read the file as a data URL
+        } else {
+            pdfPreview.style.display = 'none'; // Hide the preview if no file is selected
+        }
+    });
+</script>
